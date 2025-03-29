@@ -249,21 +249,21 @@ int main(){
     add(root, 60);
     add(root, 80);
     
-    cout << "¤¤§Ç¹M¾ú: " << In(root) << endl;
-    cout << "«e§Ç¹M¾ú: " << Pre(root) << endl;
-    cout << "«á§Ç¹M¾ú: " << Pos(root) << endl;
-    cout << "¼s«×Àu¥ý¹M¾ú: " << BFS(root) << endl;
+    cout << "ä¸­åºéæ­·: " << In(root) << endl;
+    cout << "å‰åºéæ­·: " << Pre(root) << endl;
+    cout << "å¾Œåºéæ­·: " << Pos(root) << endl;
+    cout << "å»£åº¦å„ªå…ˆéæ­·: " << BFS(root) << endl;
     
-    cout << "·j´M 40: " << (search(root, 40) ? "§ä¨ì" : "¥¼§ä¨ì") << endl;
-    cout << "·j´M 90: " << (search(root, 90) ? "§ä¨ì" : "¥¼§ä¨ì") << endl;
+    cout << "æœå°‹ 40: " << (search(root, 40) ? "æ‰¾åˆ°" : "æœªæ‰¾åˆ°") << endl;
+    cout << "æœå°‹ 90: " << (search(root, 90) ? "æ‰¾åˆ°" : "æœªæ‰¾åˆ°") << endl;
 
-    cout << "§R°£ 30" << endl;
+    cout << "åˆªé™¤ 30" << endl;
     del(root, 30);
-    cout << "§R°£ 30 «áªº¤¤§Ç¹M¾ú: " << BFS(root) << endl;
+    cout << "åˆªé™¤ 30 å¾Œçš„ä¸­åºéæ­·: " << BFS(root) << endl;
 
-    cout << "§R°£ 50 (®Ú¸`ÂI)" << endl;
+    cout << "åˆªé™¤ 50 (æ ¹ç¯€é»ž)" << endl;
     del(root, 50);
-    cout << "§R°£ 50 «áªº¤¤§Ç¹M¾ú: " << BFS(root) << endl;
+    cout << "åˆªé™¤ 50 å¾Œçš„ä¸­åºéæ­·: " << BFS(root) << endl;
     
     return 0;
 }
