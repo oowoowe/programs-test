@@ -1,0 +1,127 @@
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <time.h> 
+using namespace std;
+const int INF = 1e9;
+void rand_make_graph(int N,int r,bool p,int min,int max,vector<vector<int>> &graph){
+	graph.assign(N, vector<int>(N, INF));
+	for(int i=0;i!=graph.size();i++){
+		for(int k=0;k!=graph.size();k++){
+			if(rand()%100<r) graph[i][k]=rand()%(max-min+1)+min;
+			else graph[i][k]=INF;
+		}
+	}
+	if(p){
+		for(int i=0;i!=graph.size();i++){
+			for(int k=0;k!=graph.size();k++){
+				if(i<k)graph[i][k]=graph[k][i];
+			}
+		}
+	}
+}
+vector<vector<int>> check_TC(vector<vector<int>> n){
+	for(int i=0;i!=n.size();i++){
+		for(int k=0;k!=n.size();k++){
+			if(n[i][k]==INF)n[i][k]=0;
+			else n[i][k]=1;
+		}
+	}
+	for(int i=0;i!=n.size();i++)n[i][i]=1;
+	for(int i=0;i!=n.size();i++){
+		for(int k=0;k!=n.size();k++){
+			for(int j=0;j!=n.size();j++){
+				if(n[i][j]&&n[j][k])n[i][k]=1;
+			}
+		}
+	}
+	return n;
+}
+vector<int> dijkstra(int begin,vector<vector<int> > graph){
+	int N=graph.size();
+	vector<int> ans(N,INF);
+	vector<bool> checked(N,0);
+	for(int k=0;k!=N;k++){
+		ans[k]=graph[begin][k];	
+	}
+	ans[begin]=0;
+	checked[begin]=1; 
+	while(1){
+		int chk = -1;
+		for(int k=0;k!=N;k++){
+			if(checked[k]!=1&&(chk==-1||ans[k]<ans[chk])) chk=k;
+		}
+		if(chk==-1||ans[chk]==INF)break;
+		checked[chk]=1;
+		for(int k=0;k!=N;k++){
+			ans[k]=min(ans[k],ans[chk]+graph[chk][k]);
+		}
+	}
+	return ans;
+}
+vector<vector<int> > dijkstra_show(int begin,vector<vector<int> > graph){
+	int N=graph.size();
+	vector<vector<int> > record;
+	vector<int> ans(N,INF);
+	vector<bool> checked(N,0);
+	for(int k=0;k!=N;k++){
+		ans[k]=graph[begin][k];	
+	}
+	ans[begin]=0;
+	checked[begin]=1;
+	record.push_back(ans);
+	while(1){
+		int chk = -1;
+		for(int k=0;k!=N;k++){
+			if(checked[k]!=1&&(chk==-1||ans[k]<ans[chk])) chk=k;
+		}
+		if(chk==-1||ans[chk]==INF)break;
+		checked[chk]=1;
+		bool c=0;
+		for(int k=0;k!=N;k++){
+			int m=ans[k];
+			ans[k]=min(ans[k],ans[chk]+graph[chk][k]);
+			if(m!=ans[k])c=1;
+		}
+		if(c)record.push_back(ans);
+	}
+	return record;
+}
+vector<vector<int> > all_path(vector<vector<int> > graph){
+	vector<vector<int> > n(graph.size(),vector<int>(graph.size()));
+	for(int i=0;i!=graph.size();i++){
+		n[i]=dijkstra(i,graph);
+	}
+	return n;
+} 
+int main(){
+	const int N=10;
+	srand(time(NULL));
+	vector<vector<int> > graph;
+	rand_make_graph(N,50,0,1,100,graph);
+	vector<int> ans = dijkstra(0,graph);
+	vector<vector<int> > record = dijkstra_show(0,graph);
+	vector<vector<int> > n=all_path(graph);
+	for(int k=0;k!=N;k++){
+		cout<<ans[k]<<endl;
+	}
+	for(int i=0;i!=record.size();i++){
+		for(int k=0;k!=N;k++){
+			cout<<record[i][k]<<" ";
+		}
+		cout<<endl;
+	}
+	for(int i=0;i!=N;i++){
+		for(int k=0;k!=N;k++){
+			cout<<n[i][k]<<" ";
+		}
+		cout<<endl;
+	}
+	for(int i=0;i!=graph.size();i++){
+		for(int k=0;k!=graph.size();k++){
+			if(graph[i][k]!=INF)cout<<graph[i][k]<<" ";
+			else cout<<"INF ";
+		}
+		cout<<endl;
+	}	
+} 
