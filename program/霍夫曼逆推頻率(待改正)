@@ -1,0 +1,42 @@
+#include <iostream>
+#include <set>
+using namespace std;
+int t(int i){
+	int k=0;
+	while(i>1){
+		i=i/2;
+		k++;
+	}
+	return k;
+}
+int main(){
+	int N,n,m,sum;
+	int H[50],G[50],C[50];
+	while(cin>>N){
+		m=0;sum=0;
+		for(int i=0;i!=50;i++){
+			H[i]=0;
+			G[i]=0;
+			C[i]=0;
+		}
+		while(N--){
+			cin>>n;
+			if(n>m)m=n;
+			H[n-1]++;
+		}
+		C[m-1]=1;
+		for(int i=1;i<=t(H[m-1]);i++){
+			C[m-1-i]=C[m-i]*2;
+		}
+		G[m-1]=1;G[m-2]=1;
+		for(int i=m-3;i>=0;i--){
+			G[i]=C[i+1];
+			if(C[i]==0)C[i]=G[i]+G[i+1];
+		}
+		for(int i=m-1;i>=0;i--){
+			sum+=H[i]*G[i];
+			//cout<<H[i]<<" "<<G[i]<<" "<<C[i]<<endl;
+		}
+		cout<<"--"<<sum<<endl;
+	}
+} 
