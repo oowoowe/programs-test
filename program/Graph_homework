@@ -93,7 +93,54 @@ vector<vector<int> > all_path(vector<vector<int> > graph){
 		n[i]=dijkstra(i,graph);
 	}
 	return n;
-} 
+}
+int find(vector<int> head,int n){
+	if(head[n]!=n)
+		head[n]=find(head,head[n]);
+	return head[n];
+}
+vector<vector<int> > kru(vector<vector<int> > &graph){
+	vector<int> head(graph.size(),0);
+	for(int i=0;i!=head.size();i++) head[i]=i;
+	vector<vector<int> > tree;
+	tree.assign(graph.size(), vector<int>(graph.size(), 0));
+	int n=0,x,y;
+	while(n!=INF){
+		n=INF;
+		for(int i=0;i!=graph.size();i++){
+			for(int k=0;k!=graph.size();k++){
+				if(n>graph[i][k]&&find(head,i)!=find(head,k)){
+					n=graph[i][k];x=i;y=k;
+				}
+			}
+		}
+		tree[x][y]=1;tree[y][x]=1;
+		head[find(head,x)]=find(head,y);
+	}
+	return tree;
+}
+vector<vector<int> > prim(vector<vector<int> > &graph,int start){
+	vector<int> ch(graph.size(),0);
+	ch[start]=1;
+	vector<vector<int> > tree;
+	tree.assign(graph.size(), vector<int>(graph.size(), 0));
+	int n=0,x,y;	
+	while(n!=INF){
+		n=INF;
+		for(int i=0;i!=graph.size();i++){
+			if(ch[i]){
+				for(int k=0;k!=graph.size();k++){
+					if(n>graph[i][k]&&!ch[k]){
+						n=graph[i][k];x=i;y=k;
+					}
+				}
+			}
+		}
+		tree[x][y]=1;tree[y][x]=1;
+		ch[y]=1;
+	}
+	return tree;
+}
 int main(){
 	const int N=10;
 	srand(time(NULL));
